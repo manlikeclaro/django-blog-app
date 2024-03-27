@@ -1,0 +1,75 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    <main id="main">
+
+        {% include 'blog/sections/hero.html' %}
+
+        <!-- ======= Post Grid Section ======= -->
+        <section id="posts" class="posts">
+            <div class="container" data-aos="fade-up">
+                <div class="row g-5">
+                    <div class="col-lg-4">
+                        <div class="post-entry-1 lg">
+                            <a href="{% url 'single-post' featured.slug %}"><img
+                                    src="{% static 'blog/img/' %}{{ featured.image }}" alt="{{ featured.title }}"
+                                    class="img-fluid"></a>
+                            <div class="post-meta"><span class="date">{{ featured.category }}</span> <span class="mx-1">&bullet;</span>
+                                <span>{{ featured.date }}</span></div>
+                            <h2><a href="{% url 'single-post' featured.slug %}">{{ featured.title }}</a></h2>
+                            <p class="mb-4 d-block">{{ featured.content }}</p>
+
+                            <div class="d-flex align-items-center author">
+                                <div class="photo"><img src="{% static 'blog/img/person-1.jpg' %}"
+                                                        alt="" class="img-fluid"></div>
+                                <div class="name">
+                                    <h3 class="m-0 p-0">{{ featured.author }}</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-8">
+                        <div class="row g-5">
+                            <div class="col-lg-6 border-start custom-border">
+                                {% for post in oldest %}
+                                    <div class="post-entry-1">
+                                        <a href="{% url 'single-post' post.slug %}">
+                                            <img src="{% static 'blog/img/' %}{{ post.image }}" alt="{{ post.title }}"
+                                                class="img-fluid"></a>
+                                        <div class="post-meta"><span class="date">{{ post.category }}</span> <span
+                                                class="mx-1">&bullet;</span> <span>{{ post.date }}</span></div>
+                                        <h2><a href="{% url 'single-post' post.slug %}">{{ post.title }}</a></h2>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-lg-6 border-start custom-border">
+                                <div class="post-entry-1">
+                                    {% for post in latest %}
+                                        <a href="{% url 'single-post' post.slug %}">
+                                            <img src="{% static 'blog/img/' %}{{ post.image }}" alt="{{ post.title }}"
+                                                class="img-fluid"></a>
+                                        <div class="post-meta"><span class="date">{{ post.category }}</span> <span
+                                                class="mx-1">&bullet;</span>
+                                            <span>{{ post.date }}</span></div>
+                                        <h2><a href="{% url 'single-post' post.slug %}">{{ post.title }}</a></h2>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <!-- End .row -->
+            </div>
+        </section> <!-- End Post Grid Section -->
+
+    </main><!-- End #main -->
+{% endblock %}
