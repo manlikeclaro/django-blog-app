@@ -9,10 +9,9 @@ blog_posts = [
         "author": "Cameron Williamson",
         "date": date(2022, 7, 5),
         "title": "11 Work From Home Part-Time Jobs You Can Do Now",
-        "category": "Culture",
-        "content": "This is a sample content for the post titled '11 Work From Home Part-Time Jobs You Can Do Now'. "
-                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus est non ex luctus, "
-                   "sed blandit nulla tincidunt. Nam pharetra risus a fermentum aliquet."
+        "category": "Career",
+        "content": "This post explores 11 legitimate part-time jobs suitable for remote work, offering flexibility and opportunities for those seeking work-from-home options.",
+        "excerpt": "Discover 11 part-time remote job opportunities providing flexibility and work-life balance."
     },
     {
         "slug": "lets-get-back-to-work-new-york",
@@ -20,10 +19,9 @@ blog_posts = [
         "author": "Jessica Taylor",
         "date": date(2022, 7, 5),
         "title": "Let’s Get Back to Work, New York",
-        "category": "Sport",
-        "content": "This is a sample content for the post titled 'Let’s Get Back to Work, New York'. "
-                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus est non ex luctus, "
-                   "sed blandit nulla tincidunt. Nam pharetra risus a fermentum aliquet."
+        "category": "Business",
+        "content": "This article discusses the resurgence of business activities in New York, analyzing the city's economic recovery efforts and the return to office culture post-pandemic.",
+        "excerpt": "Explore New York's economic revival and the resurgence of office culture post-pandemic."
     },
     {
         "slug": "how-to-avoid-distraction-and-stay-focused-during-video-calls",
@@ -31,10 +29,9 @@ blog_posts = [
         "author": "Sarah Moore",
         "date": date(2022, 7, 17),
         "title": "How to Avoid Distraction and Stay Focused During Video Calls?",
-        "category": "Business",
-        "content": "This is a sample content for the post titled 'How to Avoid Distraction and Stay Focused During "
-                   "Video Calls?'. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus est non "
-                   "ex luctus, sed blandit nulla tincidunt. Nam pharetra risus a fermentum aliquet."
+        "category": "Productivity",
+        "content": "This post provides practical tips and strategies to minimize distractions and enhance focus during video calls, crucial for maintaining productivity in remote work settings.",
+        "excerpt": "Learn effective strategies to stay focused and productive during video calls."
     },
     {
         "slug": "why-craigslist-tampa-is-one-of-the-most-interesting-places-on-the-web",
@@ -42,10 +39,9 @@ blog_posts = [
         "author": "David Wilson",
         "date": date(2022, 3, 15),
         "title": "Why Craigslist Tampa Is One of The Most Interesting Places On the Web?",
-        "category": "Travel",
-        "content": "This is a sample content for the post titled 'Why Craigslist Tampa Is One of The Most Interesting "
-                   "Places On the Web?'. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus "
-                   "est non ex luctus, sed blandit nulla tincidunt. Nam pharetra risus a fermentum aliquet."
+        "category": "Technology",
+        "content": "Delve into the fascinating aspects of Craigslist Tampa, exploring its unique features and the diverse range of interactions that make it a compelling online destination.",
+        "excerpt": "Explore the intriguing features that make Craigslist Tampa an interesting online hub."
     },
     {
         "slug": "6-easy-steps-to-create-your-own-cute-merch-for-instagram",
@@ -54,9 +50,8 @@ blog_posts = [
         "date": date(2022, 7, 5),
         "title": "6 Easy Steps To Create Your Own Cute Merch For Instagram",
         "category": "Design",
-        "content": "This is a sample content for the post titled '6 Easy Steps To Create Your Own Cute Merch For "
-                   "Instagram'. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus est non ex "
-                   "luctus, sed blandit nulla tincidunt. Nam pharetra risus a fermentum aliquet."
+        "content": "This guide offers a step-by-step approach to designing and creating appealing merchandise for Instagram, catering to individuals looking to monetize their creative endeavors.",
+        "excerpt": "Learn how to design and create attractive merchandise for Instagram in 6 simple steps."
     },
     {
         "slug": "10-life-changing-hacks-every-working-mom-should-know",
@@ -64,10 +59,9 @@ blog_posts = [
         "author": "Michael Johnson",
         "date": date(2022, 3, 1),
         "title": "10 Life-Changing Hacks Every Working Mom Should Know",
-        "category": "Tech",
-        "content": "This is a sample content for the post titled '10 Life-Changing Hacks Every Working Mom Should Know'. "
-                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus est non ex luctus, "
-                   "sed blandit nulla tincidunt. Nam pharetra risus a fermentum aliquet."
+        "category": "Parenting",
+        "content": "Discover practical and innovative life hacks tailored to assist working mothers in managing their professional responsibilities while balancing family commitments effectively.",
+        "excerpt": "Explore 10 ingenious life hacks designed to help working moms achieve better work-life balance."
     },
     {
         "slug": "5-great-startup-tips-for-female-founders",
@@ -75,11 +69,11 @@ blog_posts = [
         "author": "Emily Davis",
         "date": date(2022, 7, 5),
         "title": "5 Great Startup Tips for Female Founders",
-        "category": "Food",
-        "content": "This is a sample content for the post titled '5 Great Startup Tips for Female Founders'. "
-                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus est non ex luctus, "
-                   "sed blandit nulla tincidunt. Nam pharetra risus a fermentum aliquet."
+        "category": "Entrepreneurship",
+        "content": "This article offers valuable insights and tips specifically curated for female entrepreneurs embarking on startup ventures, addressing common challenges and providing actionable advice for success.",
+        "excerpt": "Get expert advice and insights tailored for female entrepreneurs starting their own businesses."
     }
+    # Add more records as needed
 ]
 
 
@@ -104,11 +98,20 @@ def index(request):
 
 
 def posts(request):
-    return render(request, 'blog/all-posts.html')
+    latest_posts = blog_posts[:-1]
+    response_data = {
+        'posts': latest_posts,
+
+    }
+    return render(request, 'blog/all-posts.html', context=response_data)
 
 
 def single_post(request, slug):
-    return render(request, 'blog/single-post.html')
+    identified_post = next(post for post in blog_posts if post['slug'] == slug)
+    response_data = {
+        'post': identified_post
+    }
+    return render(request, 'blog/single-post.html', context=response_data)
 
 
 def about(request):
