@@ -79,17 +79,8 @@ blog_posts = [
 ]
 
 
-def get_date(blog_post):
-    return blog_post['date']
-
-
 # Create your views here.
 def index(request):
-    # sorted_blog_posts = sorted(blog_posts, key=get_date)
-    # latest_posts = sorted_blog_posts[-3:]
-    latest_posts = blog_posts[-3:]
-    older_posts = blog_posts[1:4]
-
     all_blog_posts = BlogPost.objects.all()
     featured_blog_post = BlogPost.objects.first()
 
@@ -100,11 +91,8 @@ def index(request):
     oldest_blog_posts = all_blog_posts.order_by('date')[:3]
 
     response_data = {
-        # 'featured': blog_posts[0],
         'featured': featured_blog_post,
-        # 'latest': latest_posts,
         'latest': latest_blog_posts,
-        # 'oldest': older_posts,
         'oldest': oldest_blog_posts,
 
     }
@@ -113,7 +101,6 @@ def index(request):
 
 
 def posts(request):
-    # latest_posts = blog_posts[:-1]
     all_blog_posts = BlogPost.objects.all()
     # Get the latest blog posts
     latest_blog_posts = all_blog_posts.order_by('-date')
