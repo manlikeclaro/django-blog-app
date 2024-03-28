@@ -1,6 +1,8 @@
 from datetime import date
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+
+from blog.models import BlogPost
 
 blog_posts = [
     {
@@ -87,10 +89,23 @@ def index(request):
     # latest_posts = sorted_blog_posts[-3:]
     latest_posts = blog_posts[-3:]
     older_posts = blog_posts[1:4]
+
+    all_blog_posts = BlogPost.objects.all()
+    featured_blog_post = BlogPost.objects.first()
+
+    # Get the latest 3 blog posts
+    latest_blog_posts = all_blog_posts.order_by('-date')[:3]
+
+    # Get the oldest 3 blog posts
+    oldest_blog_posts = all_blog_posts.order_by('date')[:3]
+
     response_data = {
-        'featured': blog_posts[0],
-        'latest': latest_posts,
-        'oldest': older_posts,
+        # 'featured': blog_posts[0],
+        'featured': featured_blog_post,
+        # 'latest': latest_posts,
+        'latest': latest_blog_posts,
+        # 'oldest': older_posts,
+        'oldest': oldest_blog_posts,
 
     }
 
@@ -98,18 +113,24 @@ def index(request):
 
 
 def posts(request):
-    latest_posts = blog_posts[:-1]
+    # latest_posts = blog_posts[:-1]
+    all_blog_posts = BlogPost.objects.all()
+    # Get the latest blog posts
+    latest_blog_posts = all_blog_posts.order_by('-date')
     response_data = {
-        'posts': latest_posts,
+        # 'posts': latest_posts,
+        'posts': latest_blog_posts,
 
     }
     return render(request, 'blog/all-posts.html', context=response_data)
 
 
 def single_post(request, slug):
-    identified_post = next(post for post in blog_posts if post['slug'] == slug)
+    identified_blog_post = get_object_or_404(BlogPost, slug=slug)
+    # identified_post = next(post for post in blog_posts if post['slug'] == slug)
     response_data = {
-        'post': identified_post
+        # 'post': identified_post,
+        'post': identified_blog_post
     }
     return render(request, 'blog/single-post.html', context=response_data)
 
