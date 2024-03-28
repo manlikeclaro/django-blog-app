@@ -16,13 +16,20 @@ class Author(models.Model):
         return f'{self.full_name}'
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'{self.name}'
+
+
 class BlogPost(models.Model):
     slug = models.SlugField(default="", null=False)
     # image = models.ImageField(upload_to='blog_images/')
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, related_name="posts")
     date = models.DateField()
     title = models.CharField(max_length=200)
-    category = models.CharField(max_length=100)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category", null=True)
     content = models.TextField()
     excerpt = models.TextField(default="", editable=False)
 
