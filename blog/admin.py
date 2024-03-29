@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from blog.models import BlogPost, Author, Category
+from blog.models import BlogPost, Author, Category, BlogComment
 
 
 @admin.register(BlogPost)
@@ -19,3 +19,9 @@ class AuthorAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
+
+
+@admin.register(BlogComment)
+class CommentAdmin(admin.ModelAdmin):
+    readonly_fields = ("comment_excerpt",)
+    list_display = ("author_name", "blog_post", "date",)

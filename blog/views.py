@@ -2,7 +2,8 @@ from datetime import date
 
 from django.shortcuts import render, redirect, get_object_or_404
 
-from blog.models import BlogPost
+from blog.forms import BlogCommentModelForm
+from blog.models import BlogPost, BlogComment
 
 blog_posts = [
     {
@@ -114,10 +115,21 @@ def posts(request):
 
 def single_post(request, slug):
     identified_blog_post = get_object_or_404(BlogPost, slug=slug)
-    # identified_post = next(post for post in blog_posts if post['slug'] == slug)
+    comments = BlogComment.objects.filter(blog_post=identified_blog_post)
+
+    form = BlogCommentModelForm(request.POST)
+    if form.is_valid():
+        # form.save()
+        comment = form.save(commit=False)
+        comment.blog_post = identified_blog_post
+        comment.save()
+        return redirect('single-post', slug)
+
     response_data = {
         # 'post': identified_post,
-        'post': identified_blog_post
+        'post': identified_blog_post,
+        'comments': comments,
+        'form': form
     }
     return render(request, 'blog/single-post.html', context=response_data)
 

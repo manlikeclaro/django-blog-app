@@ -38,6 +38,8 @@ class BlogPost(models.Model):
     content = models.TextField()
     excerpt = models.TextField(default="", editable=False)
 
+    # comment = models.ForeignKey(Comment, on_delete=models.SET_NULL, null=True)
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         self.excerpt = self.content[:100]
@@ -45,3 +47,20 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class BlogComment(models.Model):
+    author_name = models.CharField(max_length=100)
+    author_email = models.EmailField()
+    author_image = models.CharField(max_length=100, default="person-6.jpg")
+    comment_content = models.TextField(default="")
+    comment_excerpt = models.TextField(default="")
+    blog_post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name="post")
+    date = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        self.comment_excerpt = self.comment_content[:20]
+        super().save()
+
+    def __str__(self):
+        return f'{self.comment_content}'
