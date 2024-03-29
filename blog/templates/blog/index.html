@@ -37,7 +37,7 @@
                     <div class="col-lg-8">
                         <div class="row g-5">
                             <div class="col-lg-6 border-start custom-border">
-                                {% for post in oldest %}
+                                {% for post in latest %}
                                     <div class="post-entry-1">
                                         <a href="{% url 'single-post' post.slug %}">
                                             <img src="{% static 'blog/img/' %}{{ post.image }}" alt="{{ post.title }}"
@@ -51,7 +51,7 @@
                             </div>
 
                             <div class="col-lg-6 border-start custom-border">
-                                {% for post in latest %}
+                                {% for post in oldest %}
                                     <div class="post-entry-1">
                                         <a href="{% url 'single-post' post.slug %}">
                                             <img src="{% static 'blog/img/' %}{{ post.image }}" alt="{{ post.title }}"

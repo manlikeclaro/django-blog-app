@@ -6,6 +6,7 @@ from django.utils.text import slugify
 class Author(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+    email = models.EmailField(null=True)
     full_name = models.CharField(max_length=100, default="")
 
     def save(self, *args, **kwargs):
@@ -22,14 +23,18 @@ class Category(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+    class Meta:
+        verbose_name_plural = "Categories"
+
 
 class BlogPost(models.Model):
-    slug = models.SlugField(default="", null=False)
+    slug = models.SlugField(default="", null=False, unique=True)
     # image = models.ImageField(upload_to='blog_images/')
+    image = models.CharField(max_length=100, default="post-landscape-1.jpg", null=False)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, related_name="posts")
-    date = models.DateField()
+    date = models.DateField(auto_now=True, editable=False)
     title = models.CharField(max_length=200)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category", null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", null=True)
     content = models.TextField()
     excerpt = models.TextField(default="", editable=False)
 
