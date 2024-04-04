@@ -13,4 +13,3 @@ class BlogCommentModelForm(forms.ModelForm):
             "author_email": "Email",
             "comment_content": "Message",
         }
-
