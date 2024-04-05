@@ -40,7 +40,7 @@ def single_post(request, slug):
     if form.is_valid():
         # form.save()
         comment = form.save(commit=False)
-        comment.author = request.user
+        comment.author = request.user.member
         comment.blog_post = identified_blog_post
         comment.save()
         return redirect('single-post', slug)

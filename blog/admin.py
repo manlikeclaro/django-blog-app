@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from blog.models import BlogPost, Author, Category, BlogComment
+from blog.models import BlogPost, Author, Category, BlogComment, Member
 
 
 @admin.register(BlogPost)
@@ -13,7 +13,7 @@ class BlogPostAdmin(admin.ModelAdmin):
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     readonly_fields = ("full_name",)
-    list_display = ("user", "bio", )
+    list_display = ("user", "full_name",)
 
 
 @admin.register(Category)
@@ -25,3 +25,9 @@ class CategoryAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     readonly_fields = ("excerpt",)
     list_display = ("author", "blog_post", "excerpt", "date",)
+
+
+@admin.register(Member)
+class MemberAdmin(admin.ModelAdmin):
+    readonly_fields = ("full_name",)
+    list_display = ("user", "full_name",)

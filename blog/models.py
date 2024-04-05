@@ -5,8 +5,22 @@ from django.utils.text import slugify
 
 # Create your models here.
 class Author(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
-    profile_pic = models.ImageField(upload_to='blog/users/images/', default='')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default='')
+    profile_pic = models.ImageField(upload_to='blog/authors/images/', default='profile_1.png')
+    bio = models.TextField()
+    full_name = models.CharField(max_length=100, default="")
+
+    def save(self, *args, **kwargs):
+        self.full_name = f'{self.user.first_name} {self.user.last_name}'
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.full_name}'
+
+
+class Member(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_pic = models.ImageField(upload_to='blog/members/images/', default='profile_1.png')
     bio = models.TextField()
     full_name = models.CharField(max_length=100, default="")
 
@@ -31,7 +45,7 @@ class Category(models.Model):
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-    image = models.ImageField(upload_to='blog/posts/images/')
+    image = models.ImageField(upload_to='blog/posts/images/', default='post-landscape-1.jpg')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", null=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, related_name="posts")
     date = models.DateField(auto_now=True, editable=False)
@@ -50,7 +64,8 @@ class BlogPost(models.Model):
 
 
 class BlogComment(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    # author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Member, on_delete=models.CASCADE)
     content = models.TextField(default="")
     blog_post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name="post")
     excerpt = models.TextField(default="")
