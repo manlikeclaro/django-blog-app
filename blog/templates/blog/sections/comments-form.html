@@ -7,30 +7,11 @@
         <form action="" method="post">
             {% csrf_token %}
             <div class="row">
-{#                <div class="col-lg-6 mb-3">#}
-{#                    <label for="comment-name">Name</label>#}
-{#                    {{ form.author_name }}#}
-                    {#                <input type="text" class="form-control" id="comment-name"#}
-                    {#                       placeholder="Enter your name">#}
-{#                </div>#}
-{#                <div class="col-lg-6 mb-3">#}
-{#                    <label for="comment-email">Email</label>#}
-{#                    {{ form.author_email }}#}
-                    {#                <input type="text" class="form-control" id="comment-email"#}
-                    {#                       placeholder="Enter your email">#}
-{#                </div>#}
                 <div class="col-12 mb-3">
-{#                    <label for="comment-message">Enter Comment</label>#}
-{#                    <label>{{ form.content.label }}</label>#}
-{#                    <textarea>{{ form.content }}</textarea>#}
                     {{ form.content }}
-                    {##}
-                    {#                <textarea class="form-control" id="comment-message"#}
-                    {#                          placeholder="Enter your name" cols="30" rows="10"></textarea>#}
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Post Comment</button>
-                    {#                <input type="submit" class="btn btn-primary" value="Post comment">#}
                 </div>
             </div>
         </form>
