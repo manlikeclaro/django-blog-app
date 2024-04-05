@@ -17,7 +17,7 @@
                         {% for post in posts %}
                         	<div class="d-md-flex post-entry-2 half">
                             <a href="{% url 'single-post' post.slug %}" class="me-4 thumbnail">
-                                <img src="{% static 'blog/img/' %}{{ post.image }}" alt="{{ post.title }}" class="img-fluid">
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid">
                             </a>
                             <div>
                                 <div class="post-meta"><span class="date">{{ post.category }}</span> <span
@@ -26,7 +26,7 @@
                                 <p>{{ post.content }}</p>
                                 <div class="d-flex align-items-center author">
                                     <div class="photo">
-                                        <img src="{% static 'blog/img/person-2.jpg' %}"
+                                        <img src="{{ post.author.profile_pic.url }}"
                                              alt="" class="img-fluid">
                                     </div>
                                     <div class="name">

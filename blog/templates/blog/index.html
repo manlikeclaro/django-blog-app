@@ -17,7 +17,8 @@
                     <div class="col-lg-4">
                         <div class="post-entry-1 lg">
                             <a href="{% url 'single-post' featured.slug %}"><img
-                                    src="{% static 'blog/img/' %}{{ featured.image }}" alt="{{ featured.title }}"
+{#                                    src="{% static 'blog/img/' %}{{ featured.image }}" alt="{{ featured.title }}"#}
+                                    src="{{ featured.image.url }}" alt="{{ featured.title }}"
                                     class="img-fluid"></a>
                             <div class="post-meta"><span class="date">{{ featured.category }}</span> <span class="mx-1">&bullet;</span>
                                 <span>{{ featured.date }}</span></div>
@@ -26,7 +27,8 @@
 
                             <div class="d-flex align-items-center author">
                                 <div class="photo">
-                                    <img src="{% static 'blog/img/person-1.jpg' %}" alt="" class="img-fluid"></div>
+{#                                    <img src="{% static 'blog/img/person-1.jpg' %}" alt="{{ featured.author }}" class="img-fluid"></div>#}
+                                    <img src="{{ featured.author.profile_pic.url }}" alt="{{ featured.author }}" class="img-fluid"></div>
                                 <div class="name">
                                     <h3 class="m-0 p-0">{{ featured.author }}</h3></div>
                             </div>
@@ -40,7 +42,7 @@
                                 {% for post in latest %}
                                     <div class="post-entry-1">
                                         <a href="{% url 'single-post' post.slug %}">
-                                            <img src="{% static 'blog/img/' %}{{ post.image }}" alt="{{ post.title }}"
+                                            <img src="{{ post.image.url }}" alt="{{ post.title }}"
                                                  class="img-fluid"></a>
                                         <div class="post-meta"><span class="date">{{ post.category }}</span> <span
                                                 class="mx-1">&bullet;</span> <span>{{ post.date }}</span></div>
@@ -54,7 +56,7 @@
                                 {% for post in oldest %}
                                     <div class="post-entry-1">
                                         <a href="{% url 'single-post' post.slug %}">
-                                            <img src="{% static 'blog/img/' %}{{ post.image }}" alt="{{ post.title }}"
+                                            <img src="{{ post.image.url }}" alt="{{ post.title }}"
                                                  class="img-fluid"></a>
                                         <div class="post-meta"><span class="date">{{ post.category }}</span> <span
                                                 class="mx-1">&bullet;</span>

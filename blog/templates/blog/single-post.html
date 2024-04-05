@@ -24,7 +24,7 @@
                             <p>{{ post.content }}</p>
 
                             <figure class="my-4">
-                                <img src="{% static 'blog/img/' %}{{ post.image }}" alt="" class="img-fluid">
+                                <img src="{{ post.image.url }}" alt="" class="img-fluid">
                                 <figcaption>{{ post.excerpt }}</figcaption>
                             </figure>
 

@@ -1,16 +1,17 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import slugify
 
 
 # Create your models here.
 class Author(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
+    profile_pic = models.ImageField(upload_to='blog/users/images/', default='')
+    bio = models.TextField()
     full_name = models.CharField(max_length=100, default="")
 
     def save(self, *args, **kwargs):
-        self.full_name = f'{self.first_name} {self.last_name}'
+        self.full_name = f'{self.user.first_name} {self.user.last_name}'
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -28,14 +29,13 @@ class Category(models.Model):
 
 
 class BlogPost(models.Model):
-    slug = models.SlugField(default="", null=False, unique=True)
-    # image = models.ImageField(upload_to='blog_images/')
-    image = models.CharField(max_length=100, default="post-landscape-1.jpg", null=False)
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    image = models.ImageField(upload_to='blog/posts/images/')
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", null=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, related_name="posts")
     date = models.DateField(auto_now=True, editable=False)
-    title = models.CharField(max_length=200)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", null=True)
-    content = models.TextField()
+    slug = models.SlugField(default="", null=False, unique=True)
     excerpt = models.TextField(default="", editable=False)
 
     # comment = models.ForeignKey(Comment, on_delete=models.SET_NULL, null=True)
@@ -46,21 +46,19 @@ class BlogPost(models.Model):
         super().save()
 
     def __str__(self):
-        return self.title
+        return f"{self.title} - {self.author.full_name}"
 
 
 class BlogComment(models.Model):
-    author_name = models.CharField(max_length=100)
-    author_email = models.EmailField()
-    author_image = models.CharField(max_length=100, default="person-6.jpg")
-    comment_content = models.TextField(default="")
-    comment_excerpt = models.TextField(default="")
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    content = models.TextField(default="")
     blog_post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name="post")
+    excerpt = models.TextField(default="")
     date = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        self.comment_excerpt = self.comment_content[:20]
+        self.excerpt = self.content[:20]
         super().save()
 
     def __str__(self):
-        return f'{self.comment_content}'
+        return f'{self.author.full_name} - {self.excerpt}'

@@ -7,13 +7,13 @@ from blog.models import BlogPost, Author, Category, BlogComment
 class BlogPostAdmin(admin.ModelAdmin):
     readonly_fields = ("slug", "date")
     # list_filter = ("author", "category")
-    list_display = ("title", "author", "category", "date")
+    list_display = ("title", "author", "excerpt", "category", "date")
 
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     readonly_fields = ("full_name",)
-    list_display = ("full_name", "email")
+    list_display = ("user", "bio", )
 
 
 @admin.register(Category)
@@ -23,5 +23,5 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(BlogComment)
 class CommentAdmin(admin.ModelAdmin):
-    readonly_fields = ("comment_excerpt",)
-    list_display = ("author_name", "blog_post", "date",)
+    readonly_fields = ("excerpt",)
+    list_display = ("author", "blog_post", "excerpt", "date",)
