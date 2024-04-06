@@ -19,6 +19,7 @@ class AuthorAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
+    readonly_fields = ('slug',)
 
 
 @admin.register(BlogComment)

@@ -34,6 +34,11 @@ class Member(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    slug = models.SlugField(default='', unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save()
 
     def __str__(self):
         return f'{self.name}'
