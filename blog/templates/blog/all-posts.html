@@ -26,11 +26,11 @@
                                     <p>{{ post.content }}</p>
                                     <div class="d-flex align-items-center author">
                                         <div class="photo">
-                                            <img src="{{ post.author.profile_pic.url }}"
+                                            <img src="{{ post.author.user.profile_pic.url }}"
                                                  alt="" class="img-fluid">
                                         </div>
                                         <div class="name">
-                                            <h3 class="m-0 p-0">{{ post.author.full_name }}</h3>
+                                            <h3 class="m-0 p-0">{{ post.author }}</h3>
                                         </div>
                                     </div>
                                 </div>

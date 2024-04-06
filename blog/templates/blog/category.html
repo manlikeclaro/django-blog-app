@@ -28,10 +28,10 @@
                                 <div>
                                     <div class="post-meta"><span class="date">{{ post.category }}</span> <span
                                             class="mx-1">&bullet;</span> <span>{{ post.date }}</span></div>
-                                    <h3><a href="single-post.html">{{ post.title }}</a></h3>
+                                    <h3><a href="{% url 'single-post' post.slug %}">{{ post.title }}</a></h3>
                                     <p>{{ post.excerpt }}</p>
                                     <div class="d-flex align-items-center author">
-                                        <div class="photo"><img src="{{ post.author.profile_pic.url }}" alt=""
+                                        <div class="photo"><img src="{{ post.author.user.profile_pic.url }}" alt=""
                                                                 class="img-fluid">
                                         </div>
                                         <div class="name">

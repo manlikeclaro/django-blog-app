@@ -4,20 +4,6 @@ from django.utils.text import slugify
 
 
 # Create your models here.
-class Author(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default='')
-    profile_pic = models.ImageField(upload_to='blog/authors/images/', default='profile_1.png')
-    bio = models.TextField()
-    full_name = models.CharField(max_length=100, default="")
-
-    def save(self, *args, **kwargs):
-        self.full_name = f'{self.user.first_name} {self.user.last_name}'
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f'{self.full_name}'
-
-
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(upload_to='blog/members/images/', default='profile_1.png')
@@ -30,6 +16,22 @@ class Member(models.Model):
 
     def __str__(self):
         return f'{self.full_name}'
+
+
+class Author(models.Model):
+    # user = models.OneToOneField(User, on_delete=models.CASCADE, default='')
+    user = models.ForeignKey(Member, on_delete=models.CASCADE, default='')
+
+    # profile_pic = models.ImageField(upload_to='blog/authors/images/', default='profile_1.png')
+    # bio = models.TextField()
+    # full_name = models.CharField(max_length=100, default="")
+
+    # def save(self, *args, **kwargs):
+    #     self.full_name = f'{self.user.first_name} {self.user.last_name}'
+    #     super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.user}'
 
 
 class Category(models.Model):
@@ -52,12 +54,10 @@ class BlogPost(models.Model):
     content = models.TextField()
     image = models.ImageField(upload_to='blog/posts/images/', default='post-landscape-1.jpg')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", null=True)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, related_name="posts")
+    author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, related_name="posts")
     date = models.DateField(auto_now=True, editable=False)
     slug = models.SlugField(default="", null=False, unique=True)
     excerpt = models.TextField(default="", editable=False)
-
-    # comment = models.ForeignKey(Comment, on_delete=models.SET_NULL, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -65,7 +65,7 @@ class BlogPost(models.Model):
         super().save()
 
     def __str__(self):
-        return f"{self.title} - {self.author.full_name}"
+        return f"{self.title} - {self.author}"
 
 
 class BlogComment(models.Model):
@@ -81,4 +81,4 @@ class BlogComment(models.Model):
         super().save()
 
     def __str__(self):
-        return f'{self.author.full_name} - {self.excerpt}'
+        return f'{self.author} - {self.excerpt}'

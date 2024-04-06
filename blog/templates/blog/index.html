@@ -28,7 +28,7 @@
                             <div class="d-flex align-items-center author">
                                 <div class="photo">
 {#                                    <img src="{% static 'blog/img/person-1.jpg' %}" alt="{{ featured.author }}" class="img-fluid"></div>#}
-                                    <img src="{{ featured.author.profile_pic.url }}" alt="{{ featured.author }}" class="img-fluid"></div>
+                                    <img src="{{ featured.author.user.profile_pic.url }}" alt="{{ featured.author }}" class="img-fluid"></div>
                                 <div class="name">
                                     <h3 class="m-0 p-0">{{ featured.author }}</h3></div>
                             </div>

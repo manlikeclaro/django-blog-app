@@ -12,13 +12,13 @@ class BlogPostAdmin(admin.ModelAdmin):
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
-    readonly_fields = ("full_name",)
-    list_display = ("user", "full_name",)
+    # readonly_fields = ("full_name",)
+    list_display = ("user", )
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("name",)
+    list_display = ("name", "slug")
     readonly_fields = ('slug',)
 
 
