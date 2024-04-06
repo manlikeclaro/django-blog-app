@@ -8,55 +8,63 @@ from blog.models import BlogPost, BlogComment, Category
 
 
 # Create your views here.
-def index(request):
+class IndexView(View):
     all_blog_posts = BlogPost.objects.all()
-    hero_blog_posts = all_blog_posts[:4]
-    featured_blog_post = BlogPost.objects.first()
     categories = Category.objects.all()
 
-    # Get the latest 3 blog posts
-    latest_blog_posts = all_blog_posts.order_by('-date')[:3]
+    def get(self, request):
+        hero_blog_posts = self.all_blog_posts[:4]
+        featured_blog_post = self.all_blog_posts.first()
+        latest_blog_posts = self.all_blog_posts.order_by('-date')[:3]  # Get the latest 3 blog posts
+        oldest_blog_posts = self.all_blog_posts.order_by('date')[:3]  # Get the oldest 3 blog posts
 
-    # Get the oldest 3 blog posts
-    oldest_blog_posts = all_blog_posts.order_by('date')[:3]
-
-    context = {'featured': featured_blog_post, 'latest': latest_blog_posts, 'oldest': oldest_blog_posts,
-               'hero': hero_blog_posts, 'categories': categories}
-    return render(request, 'blog/index.html', context)
+        context = {'hero': hero_blog_posts, 'featured': featured_blog_post, 'latest': latest_blog_posts,
+                   'oldest': oldest_blog_posts, 'categories': self.categories}
+        return render(request, 'blog/index.html', context)
 
 
-def posts(request):
+class BlogPosts(View):
     all_blog_posts = BlogPost.objects.all()
-    # Get the latest blog posts
-    latest_blog_posts = all_blog_posts.order_by('-date')
     categories = Category.objects.all()
 
-    context = {'posts': latest_blog_posts, 'categories': categories}
-    return render(request, 'blog/all-posts.html', context)
+    def get(self, request):
+        latest_blog_posts = self.all_blog_posts.order_by('-date')
+
+        context = {'posts': latest_blog_posts, 'categories': self.categories}
+        return render(request, 'blog/all-posts.html', context)
 
 
-def single_post(request, slug):
-    identified_blog_post = get_object_or_404(BlogPost, slug=slug)
-    comments = BlogComment.objects.filter(blog_post=identified_blog_post)
+class SinglePost(View):
     categories = Category.objects.all()
 
-    form = BlogCommentModelForm(request.POST)
-    if form.is_valid():
-        # form.save()
-        comment = form.save(commit=False)
-        comment.author = request.user.member
-        comment.blog_post = identified_blog_post
-        comment.save()
-        return redirect('single-post', slug)
+    def get(self, request, slug):
+        form = BlogCommentModelForm()
+        identified_blog_post = get_object_or_404(BlogPost, slug=slug)
+        comments = BlogComment.objects.filter(blog_post=identified_blog_post).order_by('-date')
 
-    context = {'post': identified_blog_post, 'comments': comments, 'form': form, 'categories': categories}
-    return render(request, 'blog/single-post.html', context)
+        context = {'post': identified_blog_post, 'comments': comments, 'form': form, 'categories': self.categories}
+        return render(request, 'blog/single-post.html', context)
+
+    def post(self, request, slug):
+        form = BlogCommentModelForm(request.POST)
+
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user.member
+            comment.blog_post = get_object_or_404(BlogPost, slug=slug)
+            comment.save()
+            return redirect('single-post', slug)
+
+        # context = {'post': identified_blog_post, 'comments': comments, 'form': form, 'categories': categories}
+        # return render(request, 'blog/single-post.html', context)
 
 
-def about(request):
+class About(View):
     categories = Category.objects.all()
-    context = {'categories': categories, }
-    return render(request, 'blog/about.html')
+
+    def get(self, request, ):
+        context = {'categories': self.categories, }
+        return render(request, 'blog/about.html')
 
 
 class CategoryView(View):
