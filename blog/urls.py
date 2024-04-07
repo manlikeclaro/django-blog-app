@@ -7,5 +7,5 @@ urlpatterns = [
     path('posts', views.BlogPosts.as_view(), name='all-posts'),
     path('posts/<slug:slug>', views.SinglePost.as_view(), name='single-post'),
     path('category/<slug:slug>', views.CategoryView.as_view(), name='category'),
-    path('about', views.About.as_view(), name='about')
+    path('about', views.About.as_view(), name='about'),
 ]

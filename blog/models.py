@@ -19,16 +19,7 @@ class Member(models.Model):
 
 
 class Author(models.Model):
-    # user = models.OneToOneField(User, on_delete=models.CASCADE, default='')
     user = models.ForeignKey(Member, on_delete=models.CASCADE, default='')
-
-    # profile_pic = models.ImageField(upload_to='blog/authors/images/', default='profile_1.png')
-    # bio = models.TextField()
-    # full_name = models.CharField(max_length=100, default="")
-
-    # def save(self, *args, **kwargs):
-    #     self.full_name = f'{self.user.first_name} {self.user.last_name}'
-    #     super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.user}'

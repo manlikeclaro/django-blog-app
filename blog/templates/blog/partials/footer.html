@@ -14,13 +14,10 @@
                     <p><a href="{% url 'about' %}" class="footer-link-more">Learn More</a></p>
                 </div>
                 <div class="col-6 col-lg-3">
-                    <h3 class="footer-heading">Navigation</h3>
+                    <h3 class="footer-heading">Quick Links</h3>
                     <ul class="footer-links list-unstyled">
                         <li><a href="{% url 'index' %}"><i class="bi bi-chevron-right"></i> Home</a></li>
-                        {#              <li><a href="index.html"><i class="bi bi-chevron-right"></i> Blog</a></li>#}
                         <li><a href="{% url 'all-posts' %}"><i class="bi bi-chevron-right"></i> All Posts</a></li>
-                        <li><a href="{% url 'single-post' 'single-post' %}"><i class="bi bi-chevron-right"></i> Single
-                            Post</a></li>
                         <li><a href="{% url 'about' %}"><i class="bi bi-chevron-right"></i> About us</a></li>
                         {#              <li><a href="contact.html"><i class="bi bi-chevron-right"></i> Contact</a></li>#}
                     </ul>
@@ -30,49 +27,19 @@
                     <h3 class="footer-heading">Recent Posts</h3>
 
                     <ul class="footer-links footer-blog-entry list-unstyled">
-                        <li>
-                            <a href="{% url 'single-post' 'single-post' %}" class="d-flex align-items-center">
-                                <img src="{% static 'blog/img/post-sq-1.jpg' %}" alt="" class="img-fluid me-3">
-                                <div>
-                                    <div class="post-meta d-block"><span class="date">Culture</span> <span class="mx-1">&bullet;</span>
-                                        <span>Jul 5th '22</span></div>
-                                    <span>5 Great Startup Tips for Female Founders</span>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="{% url 'single-post' 'single-post' %}" class="d-flex align-items-center">
-                                <img src="{% static 'blog/img/post-sq-2.jpg' %}" alt="" class="img-fluid me-3">
-                                <div>
-                                    <div class="post-meta d-block"><span class="date">Culture</span> <span class="mx-1">&bullet;</span>
-                                        <span>Jul 5th '22</span></div>
-                                    <span>What is the son of Football Coach John Gruden, Deuce Gruden doing Now?</span>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="{% url 'single-post' 'single-post' %}" class="d-flex align-items-center">
-                                <img src="{% static 'blog/img/post-sq-3.jpg' %}" alt="" class="img-fluid me-3">
-                                <div>
-                                    <div class="post-meta d-block"><span class="date">Culture</span> <span class="mx-1">&bullet;</span>
-                                        <span>Jul 5th '22</span></div>
-                                    <span>Life Insurance And Pregnancy: A Working Mom’s Guide</span>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="{% url 'single-post' 'single-post' %}" class="d-flex align-items-center">
-                                <img src="{% static 'blog/img/post-sq-4.jpg' %}" alt="" class="img-fluid me-3">
-                                <div>
-                                    <div class="post-meta d-block"><span class="date">Culture</span> <span class="mx-1">&bullet;</span>
-                                        <span>Jul 5th '22</span></div>
-                                    <span>How to Avoid Distraction and Stay Focused During Video Calls?</span>
-                                </div>
-                            </a>
-                        </li>
+                        {% for post in footer %}
+                            <li>
+                                <a href="{% url 'single-post' post.slug %}" class="d-flex align-items-center">
+                                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid me-3">
+                                    <div>
+                                        <div class="post-meta d-block"><span class="date">{{ post.category }}</span>
+                                            <span class="mx-1">&bullet;</span>
+                                            <span>{{ post.date }}</span></div>
+                                        <span>{{ post.title }}</span>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
 
                     </ul>
 
