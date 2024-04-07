@@ -20,6 +20,11 @@ class Member(models.Model):
 
 class Author(models.Model):
     user = models.ForeignKey(Member, on_delete=models.CASCADE, default='')
+    posts_count = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        self.posts_count = self.posts.count()
+        super().save()
 
     def __str__(self):
         return f'{self.user}'
@@ -53,6 +58,7 @@ class BlogPost(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         self.excerpt = self.content[:100]
+        self.author.save()
         super().save()
 
     def __str__(self):

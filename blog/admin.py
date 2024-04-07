@@ -12,8 +12,8 @@ class BlogPostAdmin(admin.ModelAdmin):
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
-    # readonly_fields = ("full_name",)
-    list_display = ("user", )
+    readonly_fields = ("posts_count",)
+    list_display = ("user", "posts_count")
 
 
 @admin.register(Category)
