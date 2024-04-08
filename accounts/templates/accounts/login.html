@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+<section class="bg-gray-50 dark:bg-gray-900">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+            <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
+            Flowbite </a>
+        <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
+            <div class="p-6 space-y-4 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                    Enter account details </h1>
+                <form class="space-y-4 md:space-y-6" action="#" method="post">
+                    {% csrf_token %}
+                    <div>
+                        <label for="{{ form.username.id }}"
+                               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                        {{ form.username }}
+                    </div>
+                    <div>
+                        <label for="{{ form.password.id }}"
+                               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                        {{ form.password }}
+                    </div>
+
+                    <!-- error messages -->
+                    {% if messages %}
+                        <div class="form-outline bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                             role="alert">
+                            {% for message in messages %}
+                                <span class="block sm:inline">{{ message }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %} <!-- End errors -->
+
+                    <button type="submit"
+                            class="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded">
+                        Login
+                    </button>
+                    <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                        Don't have an account?
+                        <a href="{% url 'sign-up' %}"
+                           class="font-medium text-primary-600 hover:underline dark:text-primary-500">Register</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
