@@ -1,17 +1,23 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Page Title</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Favicons -->
+    <link href="{% static 'blog/img/favicon.png' %}" rel="icon">
+    <link href="{% static 'blog/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
 </head>
-<body class="bg-gray-50 dark:bg-gray-900">
-<section class="bg-gray-50 dark:bg-gray-900">
+<body class="bg-indigo-400 dark:bg-indigo-600">
+<section class="bg-indigo-400 dark:bg-indigo-600">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-            <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
-            Flowbite </a>
+{#        <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">#}
+{#            <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">#}
+{#            ZenBlog </a>#}
         <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
             <div class="p-6 space-y-4 sm:p-8">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -39,8 +45,10 @@
                         </div>
                     {% endif %} <!-- End errors -->
 
+                    <input type="hidden" name="next" value="{{ request.GET.next }}">
+
                     <button type="submit"
-                            class="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded">
+                            class="w-full bg-indigo-400 hover:bg-indigo-600 text-white text-sm font-medium py-2 px-4 rounded">
                         Login
                     </button>
                     <p class="text-sm font-light text-gray-500 dark:text-gray-400">

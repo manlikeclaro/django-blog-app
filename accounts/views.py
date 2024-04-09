@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import View
 
 from accounts.forms import LoginForm, SignUpForm
@@ -55,7 +56,12 @@ class LogIn(View):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return redirect('index')
+
+                next_page = request.POST.get('next', '')  # Get the 'next' parameter from POST data
+                if next_page:
+                    return redirect(next_page)
+                else:
+                    return redirect('home')  # Redirect to 'home' if 'next' parameter is not provided
             else:
                 messages.error(request, 'Invalid username or password')
 
