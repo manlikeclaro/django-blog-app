@@ -25,33 +25,31 @@ class IndexView(View):
 
 
 class BlogPosts(View):
-    all_blog_posts = BlogPost.objects.all()
-    categories = Category.objects.all()
-
     def get(self, request):
-        latest_blog_posts = self.all_blog_posts.order_by('-date')
-        footer = self.all_blog_posts.order_by('-date')[:3]
+        latest_blog_posts = BlogPost.objects.all().order_by('-date')
+        categories = Category.objects.all()
+        footer = latest_blog_posts[:3]
 
-        paginator = Paginator(self.all_blog_posts, 10)
+        paginator = Paginator(latest_blog_posts, 10)
         page_number = request.GET.get('page')
         page_object = paginator.get_page(page_number)
 
-        context = {'posts': latest_blog_posts, 'categories': self.categories, "page_object": page_object,
+        context = {'posts': page_object.object_list, 'categories': categories, "page_object": page_object,
                    'footer': footer}
         return render(request, 'blog/all-posts.html', context)
 
 
 class SinglePost(View):
-    categories = Category.objects.all()
-    footer = BlogPost.objects.all().order_by('-date')[:3]
-
     def get(self, request, slug):
+        categories = Category.objects.all()
+        footer = BlogPost.objects.all().order_by('-date')[:3]
+
         form = BlogCommentModelForm()
         identified_blog_post = get_object_or_404(BlogPost, slug=slug)
         comments = BlogComment.objects.filter(blog_post=identified_blog_post).order_by('-date')
 
-        context = {'post': identified_blog_post, 'comments': comments, 'form': form, 'categories': self.categories,
-                   'footer': self.footer}
+        context = {'post': identified_blog_post, 'comments': comments, 'form': form, 'categories': categories,
+                   'footer': footer}
         return render(request, 'blog/single-post.html', context)
 
     def post(self, request, slug):
@@ -69,26 +67,39 @@ class SinglePost(View):
 
 
 class About(View):
-    categories = Category.objects.all()
-    footer = BlogPost.objects.all().order_by('-date')[:3]
-
     def get(self, request, ):
-        context = {'categories': self.categories, 'footer': self.footer}
+        categories = Category.objects.all()
+        all_blog_posts = BlogPost.objects.all()
+        footer = all_blog_posts.order_by('-date')[:3]
+        context = {'categories': categories, 'footer': footer}
         return render(request, 'blog/about.html', context)
 
 
 class CategoryView(View):
-    categories = Category.objects.all()
-
     def get(self, request, slug):
+        categories = Category.objects.all()
         category = get_object_or_404(Category, slug=slug)
-        blogposts = BlogPost.objects.filter(category=category)
-        footer = BlogPost.objects.all().order_by('-date')[:3]
+        all_blog_posts = BlogPost.objects.all()
+        blogposts = all_blog_posts.filter(category=category)
+        footer = all_blog_posts.order_by('-date')[:3]
 
         paginator = Paginator(blogposts, 10)
         page_number = request.GET.get('page')
         page_object = paginator.get_page(page_number)
 
-        context = {'category': category, 'categories': self.categories, 'posts': blogposts, "page_object": page_object,
-                   'footer': footer}
+        context = {'category': category, 'categories': categories, 'posts': page_object.object_list,
+                   "page_object": page_object, 'footer': footer}
         return render(request, 'blog/category.html', context)
+
+
+class SearchView(View):
+    def get(self, request):
+        search_query = request.GET.get('search', '')
+        search_result = BlogPost.objects.filter(title__icontains=search_query)
+
+        paginator = Paginator(search_result, 10)
+        page_number = request.GET.get('page')
+        page_object = paginator.get_page(page_number)
+
+        context = {'posts': page_object.object_list, "page_object": page_object}
+        return render(request, 'blog/search-result.html', context)

@@ -7,7 +7,7 @@ from blog.models import BlogComment
 class BlogCommentModelForm(forms.ModelForm):
     class Meta:
         model = BlogComment
-        fields = ('content', )
+        fields = ('content',)
         labels = {
             "content": "Message",
         }

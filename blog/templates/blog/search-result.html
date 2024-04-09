@@ -1,0 +1,73 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block content %}
+    <main id="main">
+        <!-- ======= Search Results ======= -->
+        <section id="search-result" class="search-result">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="category-title">Search Results</h3>
+
+                        {% for post in posts %}
+                            <div class="d-md-flex post-entry-2 small-img">
+                                <a href="{% url 'single-post' post.slug %}" class="me-4 thumbnail">
+                                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid">
+                                </a>
+                                <div>
+                                    <div class="post-meta"><span class="date">{{ post.category }}</span> <span
+                                            class="mx-1">&bullet;</span>
+                                        <span>{{ post.date }}</span></div>
+                                    <h3><a href="{% url 'single-post' post.slug %}">
+                                        {{ post.title }}</a></h3>
+                                    <p>{{ post.excerpt }}...</p>
+                                    <div class="d-flex align-items-center author">
+                                        <div class="photo">
+                                            <img src="{{ post.author.user.profile_pic.url }}" alt="{{ post.author }}"
+                                                 class="img-fluid"></div>
+                                        <div class="name">
+                                            <h3 class="m-0 p-0">{{ post.author }}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <!-- Paging -->
+                        <div class="text-center py-4">
+                            <div class="custom-pagination">
+                                {% if page_object.has_previous %}
+                                    <a href="?page=1" class="prev">Previous</a>
+                                {% else %}
+                                    <a href="#main" class="prev disabled">Previous</a>
+                                {% endif %}
+
+                                {% for num in page_object.paginator.page_range %}
+                                    {% if page_object.number == num %}
+                                        <a class="active">{{ num }}</a>
+                                    {% else %}
+                                        <a href="?page={{ num }}">{{ num }}</a>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page_object.has_next %}
+                                    <a href="?page={{ page_object.next_page_number }}" class="next">Next</a>
+                                {% else %}
+                                    <a href="#main" class="next disabled">Next</a>
+                                {% endif %}
+
+                            </div>
+                        </div> <!-- End Paging -->
+
+                    </div>
+
+                </div>
+            </div>
+        </section> <!-- End Search Result -->
+    </main>
+{% endblock %}
