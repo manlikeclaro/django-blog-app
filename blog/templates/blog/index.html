@@ -14,7 +14,7 @@
         <section id="posts" class="posts">
             <div class="container" data-aos="fade-up">
                 <div class="row g-5">
-                    <div class="col-lg-4">
+                    <div class="col-lg-5">
                         <div class="post-entry-1 lg">
                             <a href="{% url 'single-post' featured.slug %}"><img
 {#                                    src="{% static 'blog/img/' %}{{ featured.image }}" alt="{{ featured.title }}"#}
@@ -23,7 +23,9 @@
                             <div class="post-meta"><span class="date">{{ featured.category }}</span> <span class="mx-1">&bullet;</span>
                                 <span>{{ featured.date }}</span></div>
                             <h2><a href="{% url 'single-post' featured.slug %}">{{ featured.title }}</a></h2>
-                            <p class="mb-4 d-block">{{ featured.content }}</p>
+{#                            <p class="mb-4 d-block">{{ featured.content }}</p>#}
+{#                            <p class="mb-4 d-block">{{ featured.excerpt }} <span class="">(Read More)</span></p>#}
+                            <p class="mb-4 d-block">{{ featured_content }}... <span class="">(Read More)</span></p>
 
                             <div class="d-flex align-items-center author">
                                 <div class="photo">
@@ -36,7 +38,7 @@
 
                     </div>
 
-                    <div class="col-lg-8">
+                    <div class="col-lg-7">
                         <div class="row g-5">
                             <div class="col-lg-6 border-start custom-border">
                                 {% for post in latest %}
@@ -47,7 +49,7 @@
                                         <div class="post-meta"><span class="date">{{ post.category }}</span> <span
                                                 class="mx-1">&bullet;</span> <span>{{ post.date }}</span></div>
                                         <h2><a href="{% url 'single-post' post.slug %}">{{ post.title }}</a></h2>
-                                        <p class="">{{ post.excerpt }}</p>
+                                        <p class="">{{ post.excerpt }} <span class="">(Read More)</span></p>
                                     </div>
                                 {% endfor %}
                             </div>
@@ -62,7 +64,7 @@
                                                 class="mx-1">&bullet;</span>
                                             <span>{{ post.date }}</span></div>
                                         <h2><a href="{% url 'single-post' post.slug %}">{{ post.title }}</a></h2>
-                                        <p class="">{{ post.excerpt }}</p>
+                                        <p class="">{{ post.excerpt }} <span class="">(Read More)</span></p>
                                     </div>
                                 {% endfor %}
 

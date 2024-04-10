@@ -25,7 +25,7 @@
                                         <span>{{ post.date }}</span></div>
                                     <h3><a href="{% url 'single-post' post.slug %}">
                                         {{ post.title }}</a></h3>
-                                    <p>{{ post.excerpt }}...</p>
+                                    <p>{{ post.excerpt }} <span class="">(Read More)</span></p>
                                     <div class="d-flex align-items-center author">
                                         <div class="photo">
                                             <img src="{{ post.author.user.profile_pic.url }}" alt="{{ post.author }}"

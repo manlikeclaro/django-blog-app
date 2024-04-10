@@ -52,12 +52,16 @@ class BlogPost(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", null=True)
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, related_name="posts")
     date = models.DateField(auto_now=True, editable=False)
+    created_on = models.DateTimeField(auto_now_add=True, editable=False)
     slug = models.SlugField(default="", null=False, unique=True)
     excerpt = models.TextField(default="", editable=False)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        self.excerpt = self.content[:100]
+        # self.excerpt = self.content[:100]
+        split_content = self.content.split()
+        excerpt_content = split_content[:15]  # Slicing first 15 words for excerpt
+        self.excerpt = f'{' '.join(excerpt_content)}...'
         self.author.save()
         super().save()
 
