@@ -34,13 +34,12 @@
                             <p><span class="firstcharacter">{{ post.content | slice:":1" }}</span>
                                 {{ post.content | slice:"1:" }} </p>
 
-                            <p>{{ post.content }}</p>
-
                             <figure class="my-4">
                                 <img src="{{ post.image.url }}" alt="" class="img-fluid">
-                                <figcaption>{{ post.excerpt }}</figcaption>
+                                <figcaption>{{ post.title }}</figcaption>
                             </figure>
 
+                            <p>{{ post.content }}</p>
                             <p>{{ post.content }}</p>
                             <p>{{ post.content }}</p>
 

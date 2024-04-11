@@ -23,7 +23,7 @@ class IndexView(View):
         oldest_blog_posts = self.all_blog_posts.order_by('created_on')[:3]  # Get the oldest 3 blog posts
 
         split_content = featured_blog_post.content.split()
-        featured_content = ' '.join(split_content[:100])
+        featured_content = ' '.join(split_content[:200])
 
         context = {'hero': hero_blog_posts, 'featured': featured_blog_post, 'latest': latest_blog_posts,
                    'oldest': oldest_blog_posts, 'categories': self.categories, 'footer': latest_blog_posts,
@@ -95,7 +95,8 @@ class CategoryView(View):
         page_object = paginator.get_page(page_number)
 
         context = {'category': category, 'categories': categories, 'posts': page_object.object_list,
-                   "page_object": page_object, 'footer': footer, 'sidebar': sample(list(blogposts), 3)}
+                   "page_object": page_object, 'footer': footer,
+                   'sidebar': sample(list(blogposts.order_by('created_on')), 2)}
         return render(request, 'blog/category.html', context)
 
 

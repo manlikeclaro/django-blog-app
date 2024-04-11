@@ -6,7 +6,7 @@ from django.utils.text import slugify
 # Create your models here.
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_pic = models.ImageField(upload_to='blog/members/images/', default='profile_1.png')
+    profile_pic = models.ImageField(upload_to='blog/members/images/', default='blog/members/images/default-user.png')
     bio = models.TextField()
     full_name = models.CharField(max_length=100, default="")
 
@@ -22,9 +22,9 @@ class Author(models.Model):
     user = models.ForeignKey(Member, on_delete=models.CASCADE, default='')
     posts_count = models.IntegerField(default=0)
 
-    def save(self, *args, **kwargs):
-        self.posts_count = self.posts.count()
-        super().save()
+    # def save(self, *args, **kwargs):
+    #     # self.posts_count = self.posts.count()
+    #     super().save()
 
     def __str__(self):
         return f'{self.user}'
@@ -33,6 +33,7 @@ class Author(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(default='', unique=True)
+    posts_count = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -48,7 +49,7 @@ class Category(models.Model):
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-    image = models.ImageField(upload_to='blog/posts/images/', default='post-landscape-1.jpg')
+    image = models.ImageField(upload_to='blog/posts/images/', default='blog/posts/images/default-blog.png')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", null=True)
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, related_name="posts")
     date = models.DateField(auto_now=True, editable=False)
@@ -57,13 +58,23 @@ class BlogPost(models.Model):
     excerpt = models.TextField(default="", editable=False)
 
     def save(self, *args, **kwargs):
+        is_new_post = not self.pk  # Check if the BlogPost is being created or updated
         self.slug = slugify(self.title)
         # self.excerpt = self.content[:100]
         split_content = self.content.split()
         excerpt_content = split_content[:15]  # Slicing first 15 words for excerpt
         self.excerpt = f'{' '.join(excerpt_content)}...'
-        self.author.save()
+
+        # self.author.save()
         super().save()
+
+        if is_new_post:  # If this is a new BlogPost being created
+            category = self.category
+            author = self.author
+            category.posts_count = BlogPost.objects.filter(category=category).count()
+            author.posts_count = BlogPost.objects.filter(author=author).count()  # Update the posts_count field
+            category.save()
+            author.save()  # Save the updated Author instance
 
     def __str__(self):
         return f"{self.title} - {self.author}"
