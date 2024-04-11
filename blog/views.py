@@ -1,4 +1,5 @@
 from datetime import date
+from random import sample
 
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
@@ -14,8 +15,10 @@ class IndexView(View):
     categories = Category.objects.all()
 
     def get(self, request):
-        hero_blog_posts = self.all_blog_posts[:4]
-        featured_blog_post = self.all_blog_posts.first()
+        # hero_blog_posts = self.all_blog_posts.order_by()[:4]
+        hero_blog_posts = sample(list(self.all_blog_posts), 4)  # Get 4 random blog posts
+        # featured_blog_post = self.all_blog_posts.first()
+        featured_blog_post = self.all_blog_posts.order_by('?').first()  # Get a single random blog post
         latest_blog_posts = self.all_blog_posts.order_by('-created_on')[:3]  # Get the latest 3 blog posts
         oldest_blog_posts = self.all_blog_posts.order_by('created_on')[:3]  # Get the oldest 3 blog posts
 
@@ -92,7 +95,7 @@ class CategoryView(View):
         page_object = paginator.get_page(page_number)
 
         context = {'category': category, 'categories': categories, 'posts': page_object.object_list,
-                   "page_object": page_object, 'footer': footer}
+                   "page_object": page_object, 'footer': footer, 'sidebar': sample(list(blogposts), 3)}
         return render(request, 'blog/category.html', context)
 
 
@@ -110,5 +113,5 @@ class SearchView(View):
         page_object = paginator.get_page(page_number)
 
         context = {'posts': page_object.object_list, "page_object": page_object, 'categories': categories,
-                   'footer': footer}
+                   'footer': footer, 'search_query': search_query, 'search_result': search_result}
         return render(request, 'blog/search-result.html', context)

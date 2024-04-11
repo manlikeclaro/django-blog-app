@@ -13,13 +13,26 @@
                 <div class="row">
                     <div class="col-md-12 post-content" data-aos="fade-up">
 
+                        <!-- Login message -->
+                        {% if messages %}
+                            <div class="col-sm-6 align-items-center alert alert-success alert-dismissible fade show"
+                                 role="alert">
+                                {% for message in messages %}
+                                    <span class="block sm:inline">{{ message }}</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                {% endfor %}
+                            </div>
+
+                        {% endif %} <!-- End Login message -->
+
                         <!-- ======= Single Post Content ======= -->
                         <div class="single-post">
                             <div class="post-meta"><span class="date">{{ post.category }}</span> <span class="mx-1">&bullet;</span>
                                 <span>{{ post.date }}</span></div>
                             <h1 class="mb-5">{{ post.title }}</h1>
                             <p><span class="firstcharacter">{{ post.content | slice:":1" }}</span>
-                                {{ post.content | slice:"1:"}} </p>
+                                {{ post.content | slice:"1:" }} </p>
 
                             <p>{{ post.content }}</p>
 
@@ -33,8 +46,11 @@
 
                         </div><!-- End Single Post Content -->
 
-                        <!-- ======= Comments ======= -->
-                        {% include 'blog/sections/comments.html' %} <!-- End Comments -->
+                        <div class="col-10">
+                            <!-- ======= Comments ======= -->
+                            {% include 'blog/sections/comments.html' %} <!-- End Comments -->
+
+                        </div>
 
                         <!-- ======= Comments Form ======= -->
                         {% include 'blog/sections/comments-form.html' %} <!-- End Comments Form -->

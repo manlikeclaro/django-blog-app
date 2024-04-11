@@ -34,6 +34,7 @@ class SignUp(View):
 
             if user is not None:
                 login(request, user)
+                messages.success(request, f'Welcome, {user.username.title()}! You have successfully signed up.')
                 return redirect('index')
         else:
             context = {'form': form}
@@ -56,6 +57,7 @@ class LogIn(View):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
+                messages.success(request, f'Welcome back, {user.username.title()}! You have successfully logged in.')
 
                 next_page = request.POST.get('next', '')  # Get the 'next' parameter from POST data
                 if next_page:

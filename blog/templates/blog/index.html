@@ -8,6 +8,8 @@
 {% block content %}
     <main id="main">
 
+
+
         {% include 'blog/sections/hero.html' %}
 
         <!-- ======= Post Grid Section ======= -->
@@ -17,20 +19,17 @@
                     <div class="col-lg-5">
                         <div class="post-entry-1 lg">
                             <a href="{% url 'single-post' featured.slug %}"><img
-{#                                    src="{% static 'blog/img/' %}{{ featured.image }}" alt="{{ featured.title }}"#}
                                     src="{{ featured.image.url }}" alt="{{ featured.title }}"
                                     class="img-fluid"></a>
                             <div class="post-meta"><span class="date">{{ featured.category }}</span> <span class="mx-1">&bullet;</span>
                                 <span>{{ featured.date }}</span></div>
                             <h2><a href="{% url 'single-post' featured.slug %}">{{ featured.title }}</a></h2>
-{#                            <p class="mb-4 d-block">{{ featured.content }}</p>#}
-{#                            <p class="mb-4 d-block">{{ featured.excerpt }} <span class="">(Read More)</span></p>#}
                             <p class="mb-4 d-block">{{ featured_content }}... <span class="">(Read More)</span></p>
 
                             <div class="d-flex align-items-center author">
                                 <div class="photo">
-{#                                    <img src="{% static 'blog/img/person-1.jpg' %}" alt="{{ featured.author }}" class="img-fluid"></div>#}
-                                    <img src="{{ featured.author.user.profile_pic.url }}" alt="{{ featured.author }}" class="img-fluid"></div>
+                                    <img src="{{ featured.author.user.profile_pic.url }}" alt="{{ featured.author }}"
+                                         class="img-fluid"></div>
                                 <div class="name">
                                     <h3 class="m-0 p-0">{{ featured.author }}</h3></div>
                             </div>
