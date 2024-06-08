@@ -11,8 +11,19 @@ class Member(models.Model):
     full_name = models.CharField(max_length=100, default="")
 
     def save(self, *args, **kwargs):
-        self.full_name = f'{self.user.first_name} {self.user.last_name}'
-        super().save(*args, **kwargs)
+        if not self.pk:
+            # New instance: Set full_name and save
+            self.full_name = f'{self.user.first_name} {self.user.last_name}'
+            super().save()
+        else:
+            # Existing instance: Check if bio, profile_pic, or full_name is updated
+            previous = Member.objects.get(pk=self.pk)
+
+            if (previous.bio != self.bio
+                    or previous.profile_pic != self.profile_pic
+                    or previous.full_name != self.full_name):
+                self.full_name = f'{self.user.first_name} {self.user.last_name}'
+                super().save()
 
     def __str__(self):
         return f'{self.full_name}'
@@ -21,10 +32,6 @@ class Member(models.Model):
 class Author(models.Model):
     user = models.ForeignKey(Member, on_delete=models.CASCADE, default='')
     posts_count = models.IntegerField(default=0)
-
-    # def save(self, *args, **kwargs):
-    #     # self.posts_count = self.posts.count()
-    #     super().save()
 
     def __str__(self):
         return f'{self.user}'
@@ -36,8 +43,17 @@ class Category(models.Model):
     posts_count = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super().save()
+        if not self.pk:
+            # New instance: Set slug based on name
+            self.slug = slugify(self.name)
+            super().save()
+        else:
+            # Existing instance: Check if name is updated
+            previous = Category.objects.get(pk=self.pk)
+
+            if previous.name != self.name:
+                self.slug = slugify(self.name)
+                super().save()
 
     def __str__(self):
         return f'{self.name}'
@@ -59,6 +75,7 @@ class BlogPost(models.Model):
 
     def save(self, *args, **kwargs):
         is_new_post = not self.pk  # Check if the BlogPost is being created or updated
+
         self.slug = slugify(self.title)
         # self.excerpt = self.content[:100]
         split_content = self.content.split()
